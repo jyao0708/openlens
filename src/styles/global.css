@@ -31,8 +31,7 @@
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
-/* ── Google Fonts 加载 ── */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+/* Google Fonts 通过 <link> 在 BaseLayout.astro 的 <head> 中加载 */
 
 /* ── 基础重置 ── */
 *, *::before, *::after {
