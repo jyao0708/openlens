@@ -1,5 +1,5 @@
 ---
-// 标签列表组件 — 展示一组标签
+// 标签列表组件 — 精致胶囊样式
 interface Props {
   tags: string[];
   /** 是否显示所有标签（默认不限制） */
@@ -13,38 +13,18 @@ const displayTags = limit ? tags.slice(0, limit) : tags;
 const remaining = limit ? tags.length - limit : 0;
 ---
 
-<div class="tag-list">
+<div class="flex flex-wrap gap-2">
   {displayTags.map((tag) => (
-    <a href={`${baseUrl}tags/${tag}`} class="tag">{tag}</a>
+    <a
+      href={`${baseUrl}tags/${tag}`}
+      class="inline-flex items-center px-3 py-1 bg-ink-100/80 text-ink-600 rounded-md text-[13px] font-medium hover:bg-amber-50 hover:text-amber-700 transition-all duration-200"
+    >
+      {tag}
+    </a>
   ))}
-  {remaining > 0 && <span class="tag-more">+{remaining}</span>}
+  {remaining > 0 && (
+    <span class="inline-flex items-center px-2 py-1 text-[13px] text-ink-400">
+      +{remaining}
+    </span>
+  )}
 </div>
-
-<style>
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-xs);
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 2px var(--space-sm);
-    background-color: var(--color-bg-secondary);
-    color: var(--color-text-secondary);
-    border-radius: var(--radius-sm);
-    font-size: 0.8rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .tag:hover {
-    background-color: var(--color-primary-light);
-    color: var(--color-primary);
-  }
-
-  .tag-more {
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    align-self: center;
-  }
-</style>

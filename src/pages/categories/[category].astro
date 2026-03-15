@@ -1,5 +1,5 @@
 ---
-// 分类页面 — 动态路由，展示某个分类下的所有报告
+// 分类页面 — 展示某个分类下的所有报告
 import { getCollection } from 'astro:content';
 import { CATEGORIES } from '../../content.config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -23,65 +23,35 @@ const reports = (await getCollection('reports', ({ data }) =>
 ---
 
 <BaseLayout title={`${category} - 分类`} description={`${category}分类下的研究报告`}>
-  <div class="container page-content">
-    <section class="page-header">
-      <h1>{category}</h1>
-      <p class="page-desc">共 {reports.length} 篇报告</p>
-    </section>
+  <section class="max-w-6xl mx-auto px-6 py-12 md:py-16">
+    <!-- 页面标题 -->
+    <div class="mb-8 animate-fade-up">
+      <h1 class="font-display text-3xl font-bold text-ink-900 tracking-tight mb-2">{category}</h1>
+      <p class="text-ink-500">共 {reports.length} 篇报告</p>
+    </div>
 
     <CategoryNav current={category} />
 
     {reports.length === 0 ? (
-      <div class="empty-state">
-        <p>该分类暂无报告。</p>
+      <div class="text-center py-20">
+        <p class="text-ink-500 font-medium">该分类暂无报告</p>
       </div>
     ) : (
-      <div class="report-grid">
-        {reports.map((report) => (
-          <ReportCard
-            title={report.data.title}
-            slug={report.data.slug}
-            source={report.data.source}
-            date={report.data.date}
-            category={report.data.category}
-            tags={report.data.tags}
-            summary={report.data.summary}
-          />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {reports.map((report, i) => (
+          <div class:list={['animate-fade-up', `delay-${Math.min(i + 1, 8)}`]}>
+            <ReportCard
+              title={report.data.title}
+              slug={report.data.slug}
+              source={report.data.source}
+              date={report.data.date}
+              category={report.data.category}
+              tags={report.data.tags}
+              summary={report.data.summary}
+            />
+          </div>
         ))}
       </div>
     )}
-  </div>
+  </section>
 </BaseLayout>
-
-<style>
-  .page-content {
-    padding-top: var(--space-2xl);
-    padding-bottom: var(--space-3xl);
-  }
-
-  .page-header {
-    margin-bottom: var(--space-xl);
-  }
-
-  .page-header h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: var(--space-xs);
-  }
-
-  .page-desc {
-    color: var(--color-text-secondary);
-  }
-
-  .report-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: var(--space-lg);
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: var(--space-3xl) 0;
-    color: var(--color-text-secondary);
-  }
-</style>

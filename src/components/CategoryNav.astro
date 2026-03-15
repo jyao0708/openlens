@@ -1,5 +1,5 @@
 ---
-// 分类导航组件 — 展示所有分类，高亮当前选中
+// 分类导航组件 — 胶囊式标签切换
 import { CATEGORIES } from '../content.config';
 
 interface Props {
@@ -11,49 +11,29 @@ const { current } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 ---
 
-<nav class="category-nav">
+<nav class="flex flex-wrap gap-2 mb-10">
   <a
     href={baseUrl}
-    class:list={['category-link', { active: !current }]}
+    class:list={[
+      'inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
+      !current
+        ? 'bg-ink-900 text-white shadow-md shadow-ink-900/20'
+        : 'bg-white text-ink-500 border border-ink-200 hover:border-ink-400 hover:text-ink-700 hover:shadow-sm'
+    ]}
   >
     全部
   </a>
   {CATEGORIES.map((cat) => (
     <a
       href={`${baseUrl}categories/${cat}`}
-      class:list={['category-link', { active: current === cat }]}
+      class:list={[
+        'inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
+        current === cat
+          ? 'bg-ink-900 text-white shadow-md shadow-ink-900/20'
+          : 'bg-white text-ink-500 border border-ink-200 hover:border-ink-400 hover:text-ink-700 hover:shadow-sm'
+      ]}
     >
       {cat}
     </a>
   ))}
 </nav>
-
-<style>
-  .category-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-xl);
-  }
-
-  .category-link {
-    display: inline-block;
-    padding: var(--space-xs) var(--space-md);
-    border: 1px solid var(--color-border);
-    border-radius: 9999px;
-    color: var(--color-text-secondary);
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-  }
-
-  .category-link:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-  }
-
-  .category-link.active {
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
-    color: #ffffff;
-  }
-</style>

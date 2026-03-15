@@ -1,11 +1,11 @@
 ---
-// 基础 HTML 外壳 — 所有页面共享
+// 基础 HTML 外壳 — 编辑风格设计
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = '行业研究报告知识库' } = Astro.props;
+const { title, description = 'AI 驱动的行业洞察 — 从报告中提炼信号' } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 ---
 
@@ -18,82 +18,53 @@ const baseUrl = import.meta.env.BASE_URL;
     <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
     <title>{title} | OpenLens</title>
   </head>
-  <body>
-    <header class="site-header">
-      <nav class="container">
-        <a href={baseUrl} class="site-logo">OpenLens</a>
-        <div class="nav-links">
-          <a href={baseUrl}>首页</a>
-          <a href={`${baseUrl}categories/人工智能`}>分类</a>
+  <body class="min-h-screen flex flex-col">
+    <!-- 顶部装饰线 -->
+    <div class="h-[3px] bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300"></div>
+
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-50 bg-paper/80 backdrop-blur-xl border-b border-ink-200/60">
+      <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href={baseUrl} class="group flex items-center gap-3">
+          <!-- Logo 标记：琥珀色圆环 — "lens" 视觉隐喻 -->
+          <div class="relative w-8 h-8 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-2 border-amber-500/80 group-hover:border-amber-400 transition-colors"></div>
+            <div class="w-2 h-2 rounded-full bg-amber-500 group-hover:bg-amber-400 transition-colors"></div>
+          </div>
+          <span class="font-display text-xl font-bold text-ink-900 tracking-tight">OpenLens</span>
+        </a>
+        <div class="flex items-center gap-8">
+          <a href={baseUrl} class="text-sm font-medium text-ink-500 hover:text-ink-900 transition-colors">
+            首页
+          </a>
+          <a href={`${baseUrl}categories/人工智能`} class="text-sm font-medium text-ink-500 hover:text-ink-900 transition-colors">
+            分类
+          </a>
         </div>
       </nav>
     </header>
 
-    <main>
+    <!-- 主内容 -->
+    <main class="flex-1">
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <p>OpenLens — AI 驱动的行业洞察</p>
+    <!-- 页脚 -->
+    <footer class="border-t border-ink-200/60 bg-paper-warm">
+      <div class="max-w-6xl mx-auto px-6 py-12">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="flex items-center gap-3">
+            <div class="relative w-6 h-6 flex items-center justify-center">
+              <div class="absolute inset-0 rounded-full border-[1.5px] border-ink-300"></div>
+              <div class="w-1.5 h-1.5 rounded-full bg-ink-400"></div>
+            </div>
+            <span class="font-display text-sm font-semibold text-ink-600 tracking-tight">OpenLens</span>
+          </div>
+          <p class="text-xs text-ink-400 tracking-wide">
+            AI 驱动的行业洞察 — 从报告中提炼信号
+          </p>
+        </div>
       </div>
     </footer>
   </body>
 </html>
-
-<style>
-  @import '../styles/global.css';
-
-  .site-header {
-    border-bottom: 1px solid var(--color-border);
-    background-color: var(--color-bg);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .site-header nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 3.5rem;
-  }
-
-  .site-logo {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-  }
-
-  .site-logo:hover {
-    color: var(--color-primary);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: var(--space-lg);
-  }
-
-  .nav-links a {
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-    transition: color 0.2s ease;
-  }
-
-  .nav-links a:hover {
-    color: var(--color-primary);
-  }
-
-  main {
-    min-height: calc(100vh - 3.5rem - 4rem);
-  }
-
-  .site-footer {
-    border-top: 1px solid var(--color-border);
-    padding: var(--space-lg) 0;
-    text-align: center;
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-  }
-</style>

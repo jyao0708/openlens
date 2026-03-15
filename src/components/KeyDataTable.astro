@@ -1,5 +1,5 @@
 ---
-// 关键数据表格组件 — 展示报告中的核心数据点
+// 关键数据网格组件 — 数据驱动的视觉卡片
 interface Props {
   data: Array<{
     metric: string;
@@ -11,47 +11,25 @@ interface Props {
 const { data } = Astro.props;
 ---
 
-<div class="key-data-grid">
-  {data.map((item) => (
-    <div class="data-card">
-      <div class="data-value">{item.value}</div>
-      <div class="data-metric">{item.metric}</div>
-      {item.note && <div class="data-note">{item.note}</div>}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {data.map((item, i) => (
+    <div class="relative bg-white border border-ink-200/70 rounded-xl p-5 hover:shadow-md hover:shadow-ink-900/5 transition-all duration-200 overflow-hidden">
+      <!-- 装饰角标 -->
+      <div class="absolute top-0 right-0 w-16 h-16 -mr-8 -mt-8 bg-amber-50 rounded-full opacity-60"></div>
+      <!-- 数值 -->
+      <div class="relative">
+        <div class="font-display text-2xl font-bold text-ink-900 tracking-tight mb-1.5">
+          {item.value}
+        </div>
+        <div class="text-sm text-ink-600 font-medium leading-snug">
+          {item.metric}
+        </div>
+        {item.note && (
+          <div class="text-xs text-ink-400 mt-2 leading-relaxed">
+            {item.note}
+          </div>
+        )}
+      </div>
     </div>
   ))}
 </div>
-
-<style>
-  .key-data-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--space-md);
-  }
-
-  .data-card {
-    background-color: var(--color-bg-secondary);
-    border: 1px solid var(--color-border-light);
-    border-radius: var(--radius-md);
-    padding: var(--space-md);
-  }
-
-  .data-value {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--color-primary);
-    line-height: 1.2;
-    margin-bottom: var(--space-xs);
-  }
-
-  .data-metric {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-  }
-
-  .data-note {
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    margin-top: var(--space-xs);
-  }
-</style>

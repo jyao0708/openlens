@@ -1,5 +1,5 @@
 ---
-// 报告详情页布局 — 展示单篇报告的完整内容
+// 报告详情页布局 — 长文阅读优化的编辑排版
 import BaseLayout from './BaseLayout.astro';
 import TagList from '../components/TagList.astro';
 import PdfDownload from '../components/PdfDownload.astro';
@@ -42,155 +42,107 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
 ---
 
 <BaseLayout title={title} description={summary}>
-  <article class="report-detail container container--narrow">
-    <!-- 报告头部 -->
-    <header class="report-header">
-      <div class="report-meta-top">
-        <a href={`${baseUrl}categories/${category}`} class="category-badge">{category}</a>
-        <time datetime={date.toISOString().split('T')[0]}>{formattedDate}</time>
-      </div>
-      <h1>{title}</h1>
-      <div class="report-meta">
-        <span class="source">出品：{source}</span>
-        {pageCount && <span class="page-count">{pageCount} 页</span>}
-      </div>
-      <TagList tags={tags} />
-    </header>
+  <!-- 报告头部 Hero -->
+  <div class="bg-ink-900 relative overflow-hidden">
+    <!-- 背景装饰 -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div class="absolute -bottom-32 -right-32 w-[500px] h-[400px] bg-amber-500/8 rounded-full blur-3xl"></div>
 
-    <!-- 摘要 -->
-    <section class="report-summary">
-      <p>{summary}</p>
-    </section>
+    <div class="relative max-w-3xl mx-auto px-6 pt-16 pb-20">
+      <!-- 面包屑 -->
+      <div class="flex items-center gap-2 mb-8 animate-fade-up">
+        <a href={baseUrl} class="text-xs text-ink-400 hover:text-white transition-colors">首页</a>
+        <span class="text-ink-600">/</span>
+        <a href={`${baseUrl}categories/${category}`} class="text-xs text-amber-400 hover:text-amber-300 transition-colors">{category}</a>
+      </div>
+
+      <!-- 标题 -->
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight tracking-tight mb-6 animate-fade-up delay-1">
+        {title}
+      </h1>
+
+      <!-- 元信息 -->
+      <div class="flex flex-wrap items-center gap-4 text-sm animate-fade-up delay-2">
+        <span class="text-ink-300">
+          <span class="text-ink-500">出品：</span>{source}
+        </span>
+        <span class="text-ink-600">|</span>
+        <time datetime={date.toISOString().split('T')[0]} class="text-ink-400">
+          {formattedDate}
+        </time>
+        {pageCount && (
+          <>
+            <span class="text-ink-600">|</span>
+            <span class="text-ink-400">{pageCount} 页</span>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <!-- 正文区域 -->
+  <article class="max-w-3xl mx-auto px-6 -mt-8 relative z-10">
+    <!-- 摘要卡片 -->
+    <div class="bg-white rounded-xl border border-ink-200/70 p-8 shadow-lg shadow-ink-900/5 mb-10 animate-fade-up delay-3">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-1 h-6 bg-amber-500 rounded-full"></div>
+        <span class="text-xs font-semibold uppercase tracking-widest text-ink-400">摘要</span>
+      </div>
+      <p class="text-ink-700 leading-[1.9] text-[15px]">{summary}</p>
+      <div class="mt-6">
+        <TagList tags={tags} />
+      </div>
+    </div>
 
     <!-- PDF 下载 -->
     <PdfDownload href={pdf} title={title} />
 
     <!-- 核心结论 -->
-    <section class="key-findings">
-      <h2>核心结论</h2>
-      <ol>
-        {keyFindings.map((finding) => <li>{finding}</li>)}
-      </ol>
+    <section class="mb-12">
+      <h2 class="font-display text-xl font-bold text-ink-900 mb-6 flex items-center gap-3">
+        <span class="w-8 h-[2px] bg-amber-500"></span>
+        核心结论
+      </h2>
+      <div class="space-y-4">
+        {keyFindings.map((finding, i) => (
+          <div class="flex gap-4 p-4 bg-white rounded-lg border border-ink-100 hover:border-ink-200 transition-colors">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-ink-900 text-white text-xs font-bold flex items-center justify-center">
+              {i + 1}
+            </span>
+            <p class="text-sm text-ink-700 leading-relaxed pt-0.5">{finding}</p>
+          </div>
+        ))}
+      </div>
     </section>
 
     <!-- 关键数据 -->
     {keyData && keyData.length > 0 && (
-      <section class="key-data">
-        <h2>关键数据</h2>
+      <section class="mb-12">
+        <h2 class="font-display text-xl font-bold text-ink-900 mb-6 flex items-center gap-3">
+          <span class="w-8 h-[2px] bg-amber-500"></span>
+          关键数据
+        </h2>
         <KeyDataTable data={keyData} />
       </section>
     )}
 
     <!-- 正文内容（Markdown 渲染） -->
-    <section class="report-body prose">
+    <section class="prose mb-16 pb-16 border-b border-ink-200/60">
       <slot />
     </section>
+
+    <!-- 返回首页 -->
+    <div class="text-center pb-16">
+      <a
+        href={baseUrl}
+        class="inline-flex items-center gap-2 text-sm font-medium text-ink-400 hover:text-ink-700 transition-colors"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        返回所有报告
+      </a>
+    </div>
   </article>
 </BaseLayout>
-
-<style>
-  .report-detail {
-    padding-top: var(--space-2xl);
-    padding-bottom: var(--space-3xl);
-  }
-
-  .report-header {
-    margin-bottom: var(--space-xl);
-  }
-
-  .report-meta-top {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-md);
-  }
-
-  .category-badge {
-    display: inline-block;
-    padding: var(--space-xs) var(--space-sm);
-    background-color: var(--color-primary-light);
-    color: var(--color-primary);
-    border-radius: var(--radius-sm);
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
-
-  .report-meta-top time {
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-  }
-
-  .report-header h1 {
-    font-size: 1.875rem;
-    font-weight: 800;
-    line-height: 1.3;
-    margin-bottom: var(--space-md);
-    color: var(--color-text);
-  }
-
-  .report-meta {
-    display: flex;
-    gap: var(--space-md);
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: var(--space-md);
-  }
-
-  .report-meta .source {
-    font-weight: 500;
-  }
-
-  .page-count::before {
-    content: '·';
-    margin-right: var(--space-md);
-  }
-
-  .report-summary {
-    background-color: var(--color-bg-secondary);
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    margin-bottom: var(--space-xl);
-    border-left: 4px solid var(--color-primary);
-  }
-
-  .report-summary p {
-    color: var(--color-text);
-    font-size: 1.05rem;
-    line-height: 1.7;
-  }
-
-  .key-findings {
-    margin-bottom: var(--space-xl);
-  }
-
-  .key-findings h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: var(--space-md);
-  }
-
-  .key-findings ol {
-    padding-left: var(--space-xl);
-  }
-
-  .key-findings li {
-    margin-bottom: var(--space-sm);
-    line-height: 1.7;
-  }
-
-  .key-data {
-    margin-bottom: var(--space-xl);
-  }
-
-  .key-data h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: var(--space-md);
-  }
-
-  .report-body {
-    margin-top: var(--space-2xl);
-    padding-top: var(--space-xl);
-    border-top: 1px solid var(--color-border);
-  }
-</style>

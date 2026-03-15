@@ -1,5 +1,5 @@
 ---
-// 报告卡片组件 — 用于首页、分类页、标签页的报告列表展示
+// 报告卡片组件 — 编辑风格，精致卡片设计
 interface Props {
   title: string;
   slug: string;
@@ -20,125 +20,45 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
 });
 ---
 
-<article class="report-card">
-  <div class="card-header">
-    <a href={`${baseUrl}categories/${category}`} class="category-badge">{category}</a>
-    <time datetime={date.toISOString().split('T')[0]}>{formattedDate}</time>
+<article class="group relative bg-white rounded-xl border border-ink-200/70 p-6 transition-all duration-300 hover:shadow-lg hover:shadow-ink-900/5 hover:border-ink-300 hover:-translate-y-0.5">
+  <!-- 顶部：分类 + 日期 -->
+  <div class="flex items-center justify-between mb-4">
+    <a
+      href={`${baseUrl}categories/${category}`}
+      class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-amber-600 hover:text-amber-500 transition-colors"
+    >
+      <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+      {category}
+    </a>
+    <time datetime={date.toISOString().split('T')[0]} class="text-xs text-ink-400 tabular-nums">
+      {formattedDate}
+    </time>
   </div>
-  <h3 class="card-title">
-    <a href={`${baseUrl}reports/${slug}`}>{title}</a>
+
+  <!-- 标题 -->
+  <h3 class="font-display text-lg font-bold leading-snug text-ink-900 mb-3 tracking-tight">
+    <a href={`${baseUrl}reports/${slug}`} class="after:absolute after:inset-0 hover:text-amber-700 transition-colors">
+      {title}
+    </a>
   </h3>
-  <p class="card-summary">{summary}</p>
-  <div class="card-footer">
-    <span class="card-source">{source}</span>
-    <div class="card-tags">
-      {tags.slice(0, 3).map((tag) => (
-        <a href={`${baseUrl}tags/${tag}`} class="tag">{tag}</a>
+
+  <!-- 摘要 -->
+  <p class="text-sm text-ink-500 leading-relaxed mb-5 line-clamp-2">
+    {summary}
+  </p>
+
+  <!-- 底部：来源 + 标签 -->
+  <div class="flex items-center justify-between gap-3 pt-4 border-t border-ink-100">
+    <span class="text-xs font-medium text-ink-400 truncate">{source}</span>
+    <div class="flex gap-1.5 flex-shrink-0">
+      {tags.slice(0, 2).map((tag) => (
+        <span class="relative z-10 inline-block px-2.5 py-0.5 bg-ink-50 text-ink-500 rounded-md text-[11px] font-medium hover:bg-amber-50 hover:text-amber-700 transition-colors">
+          <a href={`${baseUrl}tags/${tag}`}>{tag}</a>
+        </span>
       ))}
-      {tags.length > 3 && <span class="tag-more">+{tags.length - 3}</span>}
+      {tags.length > 2 && (
+        <span class="inline-block px-2 py-0.5 text-[11px] text-ink-400">+{tags.length - 2}</span>
+      )}
     </div>
   </div>
 </article>
-
-<style>
-  .report-card {
-    background-color: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-lg);
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-
-  .report-card:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--color-primary-light);
-  }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-sm);
-  }
-
-  .category-badge {
-    display: inline-block;
-    padding: 2px var(--space-sm);
-    background-color: var(--color-primary-light);
-    color: var(--color-primary);
-    border-radius: var(--radius-sm);
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
-
-  .card-header time {
-    color: var(--color-text-muted);
-    font-size: 0.8rem;
-  }
-
-  .card-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.4;
-    margin-bottom: var(--space-sm);
-  }
-
-  .card-title a {
-    color: var(--color-text);
-  }
-
-  .card-title a:hover {
-    color: var(--color-primary);
-  }
-
-  .card-summary {
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: var(--space-md);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-sm);
-  }
-
-  .card-source {
-    color: var(--color-text-muted);
-    font-size: 0.8rem;
-    flex-shrink: 0;
-  }
-
-  .card-tags {
-    display: flex;
-    gap: var(--space-xs);
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 1px var(--space-sm);
-    background-color: var(--color-bg-secondary);
-    color: var(--color-text-secondary);
-    border-radius: var(--radius-sm);
-    font-size: 0.75rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .tag:hover {
-    background-color: var(--color-primary-light);
-    color: var(--color-primary);
-  }
-
-  .tag-more {
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-  }
-</style>

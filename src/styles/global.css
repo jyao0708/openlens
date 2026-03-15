@@ -1,184 +1,212 @@
-/* 全局样式 — 设计 Token 和基础排版 */
+/* OpenLens — 全局样式入口 (Tailwind v4) */
+@import "tailwindcss";
 
-:root {
-  /* 主色调 */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-light: #dbeafe;
+/* ── 设计 Token ── */
+@theme {
+  /* 编辑风格色板：深墨 + 琥珀 */
+  --color-ink-950: #0a0f1a;
+  --color-ink-900: #0f172a;
+  --color-ink-800: #1e293b;
+  --color-ink-700: #334155;
+  --color-ink-600: #475569;
+  --color-ink-500: #64748b;
+  --color-ink-400: #94a3b8;
+  --color-ink-300: #cbd5e1;
+  --color-ink-200: #e2e8f0;
+  --color-ink-100: #f1f5f9;
+  --color-ink-50: #f8fafc;
 
-  /* 中性色 */
-  --color-text: #1e293b;
-  --color-text-secondary: #64748b;
-  --color-text-muted: #94a3b8;
-  --color-bg: #ffffff;
-  --color-bg-secondary: #f8fafc;
-  --color-bg-card: #ffffff;
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
+  --color-amber-500: #d97706;
+  --color-amber-400: #f59e0b;
+  --color-amber-300: #fbbf24;
+  --color-amber-100: #fef3c7;
+  --color-amber-50: #fffbeb;
 
-  /* 强调色 */
-  --color-accent: #f59e0b;
-  --color-success: #10b981;
-  --color-danger: #ef4444;
+  --color-paper: #faf9f7;
+  --color-paper-warm: #f5f3ef;
 
-  /* 间距 */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-2xl: 3rem;
-  --space-3xl: 4rem;
-
-  /* 圆角 */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-
-  /* 阴影 */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-
-  /* 字体 */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
-
-  /* 容器宽度 */
-  --container-max: 1200px;
-  --container-narrow: 800px;
+  /* 字体：衬线编辑风 + 无衬线正文 */
+  --font-display: "Playfair Display", "Noto Serif SC", "Source Han Serif SC", "STSong", Georgia, serif;
+  --font-body: "DM Sans", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
-/* 基础重置 */
-*,
-*::before,
-*::after {
+/* ── Google Fonts 加载 ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ── 基础重置 ── */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 html {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.6;
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  line-height: 1.7;
+  color: var(--color-ink-800);
+  background-color: var(--color-paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
 }
 
-/* 链接 */
+/* ── 链接基础 ── */
 a {
-  color: var(--color-primary);
+  color: inherit;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
-a:hover {
-  color: var(--color-primary-hover);
-}
-
-/* 图片 */
+/* ── 图片 ── */
 img {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* 容器 */
-.container {
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--space-lg);
+/* ── 选中文字颜色 ── */
+::selection {
+  background-color: var(--color-amber-100);
+  color: var(--color-ink-900);
 }
 
-.container--narrow {
-  max-width: var(--container-narrow);
-}
-
-/* 文章内容排版 */
+/* ── 文章内容排版（Markdown 渲染） ── */
 .prose h2 {
+  font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 700;
-  margin-top: var(--space-2xl);
-  margin-bottom: var(--space-md);
-  padding-bottom: var(--space-sm);
-  border-bottom: 1px solid var(--color-border);
+  color: var(--color-ink-900);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-ink-200);
+  letter-spacing: -0.01em;
 }
 
 .prose h3 {
+  font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 600;
-  margin-top: var(--space-xl);
-  margin-bottom: var(--space-sm);
+  color: var(--color-ink-800);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-ink-700);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .prose p {
-  margin-bottom: var(--space-md);
+  margin-bottom: 1.25rem;
+  line-height: 1.8;
+  color: var(--color-ink-700);
 }
 
-.prose ul,
-.prose ol {
-  margin-bottom: var(--space-md);
-  padding-left: var(--space-xl);
+.prose ul, .prose ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.75rem;
 }
 
 .prose li {
-  margin-bottom: var(--space-xs);
+  margin-bottom: 0.5rem;
+  line-height: 1.8;
+  color: var(--color-ink-700);
+}
+
+.prose li::marker {
+  color: var(--color-amber-500);
 }
 
 .prose table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: var(--space-lg);
+  margin-bottom: 1.5rem;
   font-size: 0.9rem;
 }
 
-.prose th,
-.prose td {
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--color-border);
+.prose th, .prose td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-ink-200);
   text-align: left;
 }
 
 .prose th {
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-ink-50);
   font-weight: 600;
+  color: var(--color-ink-800);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .prose strong {
   font-weight: 600;
+  color: var(--color-ink-900);
 }
 
 .prose blockquote {
-  border-left: 4px solid var(--color-primary);
-  padding-left: var(--space-md);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-md);
+  border-left: 3px solid var(--color-amber-500);
+  padding-left: 1.25rem;
+  color: var(--color-ink-600);
+  margin-bottom: 1.25rem;
+  font-style: italic;
 }
 
 .prose code {
   font-family: var(--font-mono);
   font-size: 0.875em;
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-ink-100);
   padding: 0.15em 0.4em;
-  border-radius: var(--radius-sm);
+  border-radius: 0.25rem;
 }
 
 .prose pre {
-  background-color: var(--color-bg-secondary);
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
+  background-color: var(--color-ink-900);
+  color: var(--color-ink-200);
+  padding: 1.25rem;
+  border-radius: 0.5rem;
   overflow-x: auto;
-  margin-bottom: var(--space-lg);
+  margin-bottom: 1.5rem;
 }
 
 .prose pre code {
   background: none;
   padding: 0;
+  color: inherit;
 }
+
+/* ── 页面入场动画 ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.5s ease-out both;
+}
+
+/* ── 交错延迟 ── */
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.2s; }
+.delay-5 { animation-delay: 0.25s; }
+.delay-6 { animation-delay: 0.3s; }
+.delay-7 { animation-delay: 0.35s; }
+.delay-8 { animation-delay: 0.4s; }

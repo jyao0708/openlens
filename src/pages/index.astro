@@ -1,5 +1,5 @@
 ---
-// 首页 — 展示所有报告列表
+// 首页 — 编辑风格，大气 Hero + 卡片网格
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ReportCard from '../components/ReportCard.astro';
@@ -8,76 +8,68 @@ import CategoryNav from '../components/CategoryNav.astro';
 // 获取所有非草稿报告，按日期倒序排列
 const allReports = (await getCollection('reports', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const reportCount = allReports.length;
 ---
 
 <BaseLayout title="首页">
-  <div class="container page-content">
-    <section class="page-header">
-      <h1>OpenLens</h1>
-      <p class="page-desc">AI 驱动的行业洞察 — 从报告中提炼信号</p>
-    </section>
+  <!-- Hero 区域 -->
+  <section class="relative overflow-hidden bg-ink-900">
+    <!-- 背景纹理 -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <!-- 渐变光晕 -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-amber-500/10 rounded-full blur-3xl"></div>
 
+    <div class="relative max-w-6xl mx-auto px-6 py-20 md:py-28">
+      <div class="max-w-2xl animate-fade-up">
+        <!-- 标签 -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur rounded-full mb-6">
+          <div class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></div>
+          <span class="text-xs font-medium text-amber-300 tracking-wide">{reportCount} 份深度报告已入库</span>
+        </div>
+        <!-- 标题 -->
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-white leading-[1.15] tracking-tight mb-5">
+          从报告中<br />
+          <span class="text-amber-400">提炼信号</span>
+        </h1>
+        <!-- 副标题 -->
+        <p class="text-lg text-ink-300 leading-relaxed max-w-lg animate-fade-up delay-1">
+          AI 驱动的行业洞察平台。自动解析 PDF 研究报告，提取核心结论与关键数据，构建可检索的知识库。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 报告列表 -->
+  <section class="max-w-6xl mx-auto px-6 py-12 md:py-16">
     <CategoryNav />
 
     {allReports.length === 0 ? (
-      <div class="empty-state">
-        <p>暂无报告内容。</p>
-        <p class="empty-hint">将 PDF 放入 inbox/pdf/ 目录，使用 AI 分析后即可发布。</p>
+      <div class="text-center py-20">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-ink-100 flex items-center justify-center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-ink-400">
+            <path d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <p class="text-ink-500 font-medium">暂无报告内容</p>
+        <p class="text-sm text-ink-400 mt-1">将 PDF 放入 inbox/pdf/ 目录，使用 AI 分析后即可发布。</p>
       </div>
     ) : (
-      <div class="report-grid">
-        {allReports.map((report) => (
-          <ReportCard
-            title={report.data.title}
-            slug={report.data.slug}
-            source={report.data.source}
-            date={report.data.date}
-            category={report.data.category}
-            tags={report.data.tags}
-            summary={report.data.summary}
-          />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {allReports.map((report, i) => (
+          <div class:list={['animate-fade-up', `delay-${Math.min(i + 1, 8)}`]}>
+            <ReportCard
+              title={report.data.title}
+              slug={report.data.slug}
+              source={report.data.source}
+              date={report.data.date}
+              category={report.data.category}
+              tags={report.data.tags}
+              summary={report.data.summary}
+            />
+          </div>
         ))}
       </div>
     )}
-  </div>
+  </section>
 </BaseLayout>
-
-<style>
-  .page-content {
-    padding-top: var(--space-2xl);
-    padding-bottom: var(--space-3xl);
-  }
-
-  .page-header {
-    margin-bottom: var(--space-xl);
-  }
-
-  .page-header h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: var(--space-sm);
-  }
-
-  .page-desc {
-    color: var(--color-text-secondary);
-    font-size: 1.05rem;
-  }
-
-  .report-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: var(--space-lg);
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: var(--space-3xl) 0;
-    color: var(--color-text-secondary);
-  }
-
-  .empty-hint {
-    margin-top: var(--space-sm);
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-  }
-</style>
