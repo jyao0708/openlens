@@ -1,11 +1,11 @@
 ---
-// 标签列表组件 — 精致胶囊样式
 interface Props {
   tags: string[];
   /** 是否显示所有标签（默认不限制） */
   limit?: number;
 }
 
+// 标签列表组件 — 精致胶囊样式，带边框和阴影
 const { tags, limit } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 
@@ -17,14 +17,15 @@ const remaining = limit ? tags.length - limit : 0;
   {displayTags.map((tag) => (
     <a
       href={`${baseUrl}tags/${tag}`}
-      class="inline-flex items-center px-3 py-1 bg-ink-100/80 text-ink-600 rounded-md text-[13px] font-medium hover:bg-amber-50 hover:text-amber-700 transition-all duration-200"
+      class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white text-ink-600 rounded-lg text-[13px] font-semibold border border-ink-200/80 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-300 transition-all duration-200 card-shadow hover:shadow-md"
     >
+      <span class="text-ink-300">#</span>
       {tag}
     </a>
   ))}
   {remaining > 0 && (
-    <span class="inline-flex items-center px-2 py-1 text-[13px] text-ink-400">
-      +{remaining}
+    <span class="inline-flex items-center px-3 py-1.5 text-[13px] text-ink-400 font-medium">
+      +{remaining} 更多
     </span>
   )}
 </div>

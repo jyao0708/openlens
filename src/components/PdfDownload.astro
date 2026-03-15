@@ -1,5 +1,4 @@
 ---
-// PDF 下载按钮组件 — 醒目的 CTA 设计
 interface Props {
   /** PDF 路径，如 /pdf/ai-toy-market-2026.pdf */
   href: string;
@@ -7,6 +6,7 @@ interface Props {
   title: string;
 }
 
+// PDF 下载按钮组件 — 醒目的 CTA 设计，更强视觉重量
 const { href, title } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 
@@ -14,19 +14,29 @@ const baseUrl = import.meta.env.BASE_URL;
 const fullHref = `${baseUrl}${href.startsWith('/') ? href.slice(1) : href}`;
 ---
 
-<div class="my-8">
+<div class="my-10">
   <a
     href={fullHref}
     target="_blank"
     rel="noopener noreferrer"
-    class="group inline-flex items-center gap-3 px-6 py-3.5 bg-ink-900 text-white rounded-lg font-medium text-sm transition-all duration-200 hover:bg-ink-800 hover:shadow-lg hover:shadow-ink-900/20 hover:-translate-y-0.5 active:translate-y-0"
+    class="group relative inline-flex items-center gap-3 px-7 py-4 bg-ink-900 text-white rounded-xl font-semibold text-sm transition-all duration-300 hover:bg-ink-800 shadow-lg shadow-ink-900/20 hover:shadow-xl hover:shadow-ink-900/25 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
   >
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-70 group-hover:opacity-100 transition-opacity">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-      <polyline points="7 10 12 15 17 10"></polyline>
-      <line x1="12" y1="15" x2="12" y2="3"></line>
-    </svg>
-    下载完整 PDF 报告
-    <span class="text-xs text-white/50 font-normal">PDF</span>
+    <!-- 悬停时的渐变光效 -->
+    <div class="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/10 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+    <div class="relative flex items-center gap-3">
+      <!-- 图标容器 -->
+      <div class="w-9 h-9 rounded-lg bg-amber-500/20 flex items-center justify-center group-hover:bg-amber-500/30 transition-colors duration-300">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-white font-semibold">下载完整 PDF 报告</span>
+        <span class="text-[11px] text-ink-400 font-normal">PDF 格式 — 原版完整文件</span>
+      </div>
+    </div>
   </a>
 </div>

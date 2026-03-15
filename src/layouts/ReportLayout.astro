@@ -1,10 +1,10 @@
 ---
-// 报告详情页布局 — 长文阅读优化的编辑排版
 import BaseLayout from './BaseLayout.astro';
 import TagList from '../components/TagList.astro';
 import PdfDownload from '../components/PdfDownload.astro';
 import KeyDataTable from '../components/KeyDataTable.astro';
 
+// 报告详情页布局 — 长文阅读优化的编辑排版
 interface Props {
   title: string;
   source: string;
@@ -44,35 +44,48 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
 <BaseLayout title={title} description={summary}>
   <!-- 报告头部 Hero -->
   <div class="bg-ink-900 relative overflow-hidden">
-    <!-- 背景装饰 -->
-    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-    <div class="absolute -bottom-32 -right-32 w-[500px] h-[400px] bg-amber-500/8 rounded-full blur-3xl"></div>
+    <!-- 背景装饰（CSS 类替代内联 SVG，避免 esbuild 报错） -->
+    <div class="absolute inset-0 hero-texture"></div>
+    <div class="absolute inset-0 grid-pattern"></div>
 
-    <div class="relative max-w-3xl mx-auto px-6 pt-16 pb-20">
+    <!-- 光晕装饰 -->
+    <div class="absolute top-1/2 left-1/2 w-[600px] h-[400px] rounded-full bg-amber-500/15 blur-[100px] animate-glow-pulse"></div>
+    <div class="absolute -bottom-32 -right-32 w-[400px] h-[300px] bg-amber-500/8 rounded-full blur-[80px]"></div>
+
+    <!-- 底部过渡渐变 -->
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-paper to-transparent"></div>
+
+    <div class="relative max-w-3xl mx-auto px-6 pt-16 pb-24">
       <!-- 面包屑 -->
-      <div class="flex items-center gap-2 mb-8 animate-fade-up">
-        <a href={baseUrl} class="text-xs text-ink-400 hover:text-white transition-colors">首页</a>
+      <div class="flex items-center gap-2.5 mb-8 animate-fade-up">
+        <a href={baseUrl} class="text-xs font-medium text-ink-400 hover:text-white transition-colors duration-200">首页</a>
         <span class="text-ink-600">/</span>
-        <a href={`${baseUrl}categories/${category}`} class="text-xs text-amber-400 hover:text-amber-300 transition-colors">{category}</a>
+        <a href={`${baseUrl}categories/${category}`} class="text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors duration-200">{category}</a>
       </div>
 
       <!-- 标题 -->
-      <h1 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight tracking-tight mb-6 animate-fade-up delay-1">
+      <h1 class="font-display text-3xl md:text-[2.5rem] font-extrabold text-white leading-tight tracking-tight mb-7 animate-fade-up delay-1">
         {title}
       </h1>
 
       <!-- 元信息 -->
       <div class="flex flex-wrap items-center gap-4 text-sm animate-fade-up delay-2">
-        <span class="text-ink-300">
-          <span class="text-ink-500">出品：</span>{source}
-        </span>
-        <span class="text-ink-600">|</span>
-        <time datetime={date.toISOString().split('T')[0]} class="text-ink-400">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-ink-300">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <circle cx="12" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"></circle>
+            </svg>
+          </div>
+          <span class="text-ink-300 font-medium">{source}</span>
+        </div>
+        <span class="w-1 h-1 rounded-full bg-ink-600"></span>
+        <time datetime={date.toISOString().split('T')[0]} class="text-ink-400 font-medium">
           {formattedDate}
         </time>
         {pageCount && (
           <>
-            <span class="text-ink-600">|</span>
+            <span class="w-1 h-1 rounded-full bg-ink-600"></span>
             <span class="text-ink-400">{pageCount} 页</span>
           </>
         )}
@@ -81,15 +94,15 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
   </div>
 
   <!-- 正文区域 -->
-  <article class="max-w-3xl mx-auto px-6 -mt-8 relative z-10">
+  <article class="max-w-3xl mx-auto px-6 -mt-12 relative z-10">
     <!-- 摘要卡片 -->
-    <div class="bg-white rounded-xl border border-ink-200/70 p-8 shadow-lg shadow-ink-900/5 mb-10 animate-fade-up delay-3">
-      <div class="flex items-center gap-2 mb-4">
-        <div class="w-1 h-6 bg-amber-500 rounded-full"></div>
-        <span class="text-xs font-semibold uppercase tracking-widest text-ink-400">摘要</span>
+    <div class="bg-white rounded-xl border border-ink-200/80 p-8 md:p-10 shadow-depth mb-12 animate-fade-up delay-3">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-1 h-7 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full"></div>
+        <span class="text-xs font-bold uppercase tracking-[0.15em] text-ink-400">摘要</span>
       </div>
       <p class="text-ink-700 leading-[1.9] text-[15px]">{summary}</p>
-      <div class="mt-6">
+      <div class="mt-7 pt-6 border-t border-ink-100">
         <TagList tags={tags} />
       </div>
     </div>
@@ -98,18 +111,18 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
     <PdfDownload href={pdf} title={title} />
 
     <!-- 核心结论 -->
-    <section class="mb-12">
-      <h2 class="font-display text-xl font-bold text-ink-900 mb-6 flex items-center gap-3">
-        <span class="w-8 h-[2px] bg-amber-500"></span>
+    <section class="mb-14">
+      <h2 class="font-display text-xl font-bold text-ink-900 mb-7 flex items-center gap-3">
+        <span class="w-10 h-[3px] bg-gradient-to-r from-amber-500 to-amber-300 rounded-full"></span>
         核心结论
       </h2>
       <div class="space-y-4">
         {keyFindings.map((finding, i) => (
-          <div class="flex gap-4 p-4 bg-white rounded-lg border border-ink-100 hover:border-ink-200 transition-colors">
-            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-ink-900 text-white text-xs font-bold flex items-center justify-center">
+          <div class="flex gap-4 p-5 bg-white rounded-xl border border-ink-200/70 card-shadow hover:card-shadow-hover transition-all duration-300 group">
+            <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-ink-900 text-white text-xs font-bold flex items-center justify-center group-hover:bg-amber-500 transition-colors duration-300">
               {i + 1}
             </span>
-            <p class="text-sm text-ink-700 leading-relaxed pt-0.5">{finding}</p>
+            <p class="text-sm text-ink-700 leading-relaxed pt-1">{finding}</p>
           </div>
         ))}
       </div>
@@ -117,9 +130,9 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
 
     <!-- 关键数据 -->
     {keyData && keyData.length > 0 && (
-      <section class="mb-12">
-        <h2 class="font-display text-xl font-bold text-ink-900 mb-6 flex items-center gap-3">
-          <span class="w-8 h-[2px] bg-amber-500"></span>
+      <section class="mb-14">
+        <h2 class="font-display text-xl font-bold text-ink-900 mb-7 flex items-center gap-3">
+          <span class="w-10 h-[3px] bg-gradient-to-r from-amber-500 to-amber-300 rounded-full"></span>
           关键数据
         </h2>
         <KeyDataTable data={keyData} />
@@ -127,17 +140,17 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
     )}
 
     <!-- 正文内容（Markdown 渲染） -->
-    <section class="prose mb-16 pb-16 border-b border-ink-200/60">
+    <section class="prose mb-16 pb-16 border-b-2 border-ink-200/60">
       <slot />
     </section>
 
     <!-- 返回首页 -->
-    <div class="text-center pb-16">
+    <div class="text-center pb-20">
       <a
         href={baseUrl}
-        class="inline-flex items-center gap-2 text-sm font-medium text-ink-400 hover:text-ink-700 transition-colors"
+        class="group inline-flex items-center gap-2.5 px-6 py-3 text-sm font-semibold text-ink-500 hover:text-ink-900 bg-white border border-ink-200 rounded-xl card-shadow hover:card-shadow-hover transition-all duration-300"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:-translate-x-1">
           <line x1="19" y1="12" x2="5" y2="12"></line>
           <polyline points="12 19 5 12 12 5"></polyline>
         </svg>

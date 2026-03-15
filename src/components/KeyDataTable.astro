@@ -1,5 +1,4 @@
 ---
-// 关键数据网格组件 — 数据驱动的视觉卡片
 interface Props {
   data: Array<{
     metric: string;
@@ -8,24 +7,28 @@ interface Props {
   }>;
 }
 
+// 关键数据网格组件 — 数据驱动的视觉卡片（增强视觉重量）
 const { data } = Astro.props;
 ---
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
   {data.map((item, i) => (
-    <div class="relative bg-white border border-ink-200/70 rounded-xl p-5 hover:shadow-md hover:shadow-ink-900/5 transition-all duration-200 overflow-hidden">
+    <div class="relative bg-white border border-ink-200/80 rounded-xl p-6 card-shadow hover:card-shadow-hover transition-all duration-300 overflow-hidden group">
+      <!-- 左侧装饰线 -->
+      <div class="absolute top-4 bottom-4 left-0 w-[3px] bg-gradient-to-b from-amber-500 to-amber-300 rounded-r"></div>
       <!-- 装饰角标 -->
-      <div class="absolute top-0 right-0 w-16 h-16 -mr-8 -mt-8 bg-amber-50 rounded-full opacity-60"></div>
+      <div class="absolute top-0 right-0 w-20 h-20 -mr-10 -mt-10 bg-amber-100/40 rounded-full group-hover:bg-amber-100/60 transition-colors duration-300"></div>
+
       <!-- 数值 -->
-      <div class="relative">
-        <div class="font-display text-2xl font-bold text-ink-900 tracking-tight mb-1.5">
+      <div class="relative pl-3">
+        <div class="font-display text-2xl font-extrabold text-ink-900 tracking-tight mb-2 leading-tight">
           {item.value}
         </div>
-        <div class="text-sm text-ink-600 font-medium leading-snug">
+        <div class="text-sm text-ink-600 font-semibold leading-snug">
           {item.metric}
         </div>
         {item.note && (
-          <div class="text-xs text-ink-400 mt-2 leading-relaxed">
+          <div class="text-xs text-ink-400 mt-2.5 leading-relaxed border-t border-ink-100 pt-2.5">
             {item.note}
           </div>
         )}

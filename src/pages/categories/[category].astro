@@ -1,5 +1,4 @@
 ---
-// 分类页面 — 展示某个分类下的所有报告
 import { getCollection } from 'astro:content';
 import { CATEGORIES } from '../../content.config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -23,21 +22,44 @@ const reports = (await getCollection('reports', ({ data }) =>
 ---
 
 <BaseLayout title={`${category} - 分类`} description={`${category}分类下的研究报告`}>
-  <section class="max-w-6xl mx-auto px-6 py-12 md:py-16">
-    <!-- 页面标题 -->
-    <div class="mb-8 animate-fade-up">
-      <h1 class="font-display text-3xl font-bold text-ink-900 tracking-tight mb-2">{category}</h1>
-      <p class="text-ink-500">共 {reports.length} 篇报告</p>
-    </div>
+  <!-- 分类页面头部：轻量 Hero -->
+  <div class="bg-ink-900 relative overflow-hidden">
+    <!-- 背景纹理 -->
+    <div class="absolute inset-0 hero-texture"></div>
+    <!-- 光晕 -->
+    <div class="absolute top-1/2 left-1/2 w-[500px] h-[300px] rounded-full bg-amber-500/12 blur-[80px] animate-glow-pulse"></div>
+    <!-- 底部过渡 -->
+    <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-paper to-transparent"></div>
 
+    <div class="relative max-w-6xl mx-auto px-6 py-14 md:py-20">
+      <div class="animate-fade-up">
+        <!-- 面包屑 -->
+        <div class="flex items-center gap-2 mb-6">
+          <a href={`${import.meta.env.BASE_URL}`} class="text-xs font-medium text-ink-400 hover:text-white transition-colors">首页</a>
+          <span class="text-ink-600">/</span>
+          <span class="text-xs font-medium text-amber-400">分类</span>
+        </div>
+        <h1 class="font-display text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-3">{category}</h1>
+        <p class="text-ink-400 font-medium">共 <span class="text-amber-400 font-bold">{reports.length}</span> 篇研究报告</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="max-w-6xl mx-auto px-6 py-12 md:py-16">
     <CategoryNav current={category} />
 
     {reports.length === 0 ? (
-      <div class="text-center py-20">
-        <p class="text-ink-500 font-medium">该分类暂无报告</p>
+      <div class="text-center py-24">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-ink-100 flex items-center justify-center card-shadow">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-ink-400">
+            <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <p class="text-ink-600 font-semibold text-lg mb-2">该分类暂无报告</p>
+        <p class="text-sm text-ink-400">更多内容即将上线</p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
         {reports.map((report, i) => (
           <div class:list={['animate-fade-up', `delay-${Math.min(i + 1, 8)}`]}>
             <ReportCard

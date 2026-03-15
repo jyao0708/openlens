@@ -1,5 +1,4 @@
 ---
-// 报告卡片组件 — 编辑风格，精致卡片设计
 interface Props {
   title: string;
   slug: string;
@@ -10,6 +9,7 @@ interface Props {
   summary: string;
 }
 
+// 报告卡片组件 — 编辑风格，精致卡片设计（含默认阴影）
 const { title, slug, source, date, category, tags, summary } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 
@@ -20,44 +20,49 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
 });
 ---
 
-<article class="group relative bg-white rounded-xl border border-ink-200/70 p-6 transition-all duration-300 hover:shadow-lg hover:shadow-ink-900/5 hover:border-ink-300 hover:-translate-y-0.5">
+<article class="group relative bg-white rounded-xl border border-ink-200/80 p-6 transition-all duration-300 card-shadow hover:card-shadow-hover hover:border-ink-300/80 hover:-translate-y-1">
+  <!-- 顶部装饰线 -->
+  <div class="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-amber-500 via-amber-400 to-transparent rounded-b opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
   <!-- 顶部：分类 + 日期 -->
   <div class="flex items-center justify-between mb-4">
     <a
       href={`${baseUrl}categories/${category}`}
-      class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-amber-600 hover:text-amber-500 transition-colors"
+      class="relative z-10 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-600 hover:text-amber-500 transition-colors"
     >
-      <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+      <span class="w-1.5 h-1.5 rounded-full bg-amber-500 ring-2 ring-amber-100"></span>
       {category}
     </a>
-    <time datetime={date.toISOString().split('T')[0]} class="text-xs text-ink-400 tabular-nums">
+    <time datetime={date.toISOString().split('T')[0]} class="text-xs text-ink-400 tabular-nums font-medium">
       {formattedDate}
     </time>
   </div>
 
   <!-- 标题 -->
-  <h3 class="font-display text-lg font-bold leading-snug text-ink-900 mb-3 tracking-tight">
-    <a href={`${baseUrl}reports/${slug}`} class="after:absolute after:inset-0 hover:text-amber-700 transition-colors">
+  <h3 class="font-display text-[1.1rem] font-bold leading-snug text-ink-900 mb-3 tracking-tight line-clamp-2">
+    <a href={`${baseUrl}reports/${slug}`} class="after:absolute after:inset-0 hover:text-amber-700 transition-colors duration-200">
       {title}
     </a>
   </h3>
 
   <!-- 摘要 -->
-  <p class="text-sm text-ink-500 leading-relaxed mb-5 line-clamp-2">
+  <p class="text-[0.85rem] text-ink-500 leading-relaxed mb-5 line-clamp-2">
     {summary}
   </p>
 
   <!-- 底部：来源 + 标签 -->
   <div class="flex items-center justify-between gap-3 pt-4 border-t border-ink-100">
-    <span class="text-xs font-medium text-ink-400 truncate">{source}</span>
+    <span class="text-xs font-medium text-ink-400 truncate max-w-[120px]">
+      <span class="text-ink-300 mr-1">by</span>{source}
+    </span>
     <div class="flex gap-1.5 flex-shrink-0">
       {tags.slice(0, 2).map((tag) => (
-        <span class="relative z-10 inline-block px-2.5 py-0.5 bg-ink-50 text-ink-500 rounded-md text-[11px] font-medium hover:bg-amber-50 hover:text-amber-700 transition-colors">
+        <span class="relative z-10 inline-block px-2.5 py-0.5 bg-ink-50 text-ink-500 rounded-md text-[11px] font-semibold border border-ink-100 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-200 transition-all duration-200">
           <a href={`${baseUrl}tags/${tag}`}>{tag}</a>
         </span>
       ))}
       {tags.length > 2 && (
-        <span class="inline-block px-2 py-0.5 text-[11px] text-ink-400">+{tags.length - 2}</span>
+        <span class="inline-block px-2 py-0.5 text-[11px] text-ink-400 font-medium">+{tags.length - 2}</span>
       )}
     </div>
   </div>

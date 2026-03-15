@@ -23,26 +23,26 @@ const googleFontsUrl = 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,op
     <link href={googleFontsUrl} rel="stylesheet" />
     <title>{title} | OpenLens</title>
   </head>
-  <body class="min-h-screen flex flex-col">
-    <!-- 顶部装饰线 -->
-    <div class="h-[3px] bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300"></div>
+  <body class="min-h-screen flex flex-col bg-paper">
+    <!-- 顶部装饰线：加粗到 5px，渐变更鲜明 -->
+    <div class="h-[5px] bg-gradient-to-r from-amber-600 via-amber-400 to-amber-300 shadow-[0_2px_8px_rgba(217,119,6,0.3)]"></div>
 
-    <!-- 导航栏 -->
-    <header class="sticky top-0 z-50 bg-paper/80 backdrop-blur-xl border-b border-ink-200/60">
+    <!-- 导航栏：更强的毛玻璃效果 -->
+    <header class="sticky top-0 z-50 border-b border-ink-200/80" style="background: rgba(250, 249, 247, 0.85); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);">
       <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href={baseUrl} class="group flex items-center gap-3">
-          <!-- Logo 标记：琥珀色圆环 — "lens" 视觉隐喻 -->
-          <div class="relative w-8 h-8 flex items-center justify-center">
-            <div class="absolute inset-0 rounded-full border-2 border-amber-500/80 group-hover:border-amber-400 transition-colors"></div>
-            <div class="w-2 h-2 rounded-full bg-amber-500 group-hover:bg-amber-400 transition-colors"></div>
+          <!-- Logo：琥珀色圆环 — "lens" 视觉隐喻 -->
+          <div class="relative w-9 h-9 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-[2.5px] border-amber-500 group-hover:border-amber-400 transition-all duration-300 group-hover:shadow-[0_0_12px_rgba(217,119,6,0.3)]"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-amber-500 group-hover:bg-amber-400 transition-colors duration-300"></div>
           </div>
           <span class="font-display text-xl font-bold text-ink-900 tracking-tight">OpenLens</span>
         </a>
-        <div class="flex items-center gap-8">
-          <a href={baseUrl} class="text-sm font-medium text-ink-500 hover:text-ink-900 transition-colors">
+        <div class="flex items-center gap-1">
+          <a href={baseUrl} class="px-4 py-2 text-sm font-medium text-ink-500 hover:text-ink-900 hover:bg-ink-100/60 rounded-lg transition-all duration-200">
             首页
           </a>
-          <a href={`${baseUrl}categories/人工智能`} class="text-sm font-medium text-ink-500 hover:text-ink-900 transition-colors">
+          <a href={`${baseUrl}categories/人工智能`} class="px-4 py-2 text-sm font-medium text-ink-500 hover:text-ink-900 hover:bg-ink-100/60 rounded-lg transition-all duration-200">
             分类
           </a>
         </div>
@@ -54,19 +54,31 @@ const googleFontsUrl = 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,op
       <slot />
     </main>
 
-    <!-- 页脚 -->
-    <footer class="border-t border-ink-200/60 bg-paper-warm">
-      <div class="max-w-6xl mx-auto px-6 py-12">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+    <!-- 页脚：更丰富的内容和视觉层次 -->
+    <footer class="border-t border-ink-200 bg-ink-900">
+      <div class="max-w-6xl mx-auto px-6 py-14">
+        <!-- 上部分：品牌和描述 -->
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
           <div class="flex items-center gap-3">
-            <div class="relative w-6 h-6 flex items-center justify-center">
-              <div class="absolute inset-0 rounded-full border-[1.5px] border-ink-300"></div>
-              <div class="w-1.5 h-1.5 rounded-full bg-ink-400"></div>
+            <div class="relative w-8 h-8 flex items-center justify-center">
+              <div class="absolute inset-0 rounded-full border-2 border-amber-500/60"></div>
+              <div class="w-2 h-2 rounded-full bg-amber-500/80"></div>
             </div>
-            <span class="font-display text-sm font-semibold text-ink-600 tracking-tight">OpenLens</span>
+            <span class="font-display text-lg font-bold text-white tracking-tight">OpenLens</span>
           </div>
-          <p class="text-xs text-ink-400 tracking-wide">
-            AI 驱动的行业洞察 — 从报告中提炼信号
+          <p class="text-sm text-ink-400 max-w-md leading-relaxed">
+            AI 驱动的行业洞察平台。自动解析 PDF 研究报告，提取核心结论与关键数据，构建可检索的知识库。
+          </p>
+        </div>
+        <!-- 分割线 -->
+        <div class="h-px bg-ink-700/60 mb-8"></div>
+        <!-- 下部分：版权和标语 -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p class="text-xs text-ink-500 tracking-wide">
+            从报告中提炼信号 — Signal from Noise
+          </p>
+          <p class="text-xs text-ink-600">
+            &copy; {new Date().getFullYear()} OpenLens
           </p>
         </div>
       </div>
