@@ -1,0 +1,87 @@
+---
+// 分类页面 — 动态路由，展示某个分类下的所有报告
+import { getCollection } from 'astro:content';
+import { CATEGORIES } from '../../content.config';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ReportCard from '../../components/ReportCard.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
+
+// 静态路径生成：为每个分类生成一个页面
+export async function getStaticPaths() {
+  return CATEGORIES.map((cat) => ({
+    params: { category: cat },
+    props: { category: cat },
+  }));
+}
+
+const { category } = Astro.props;
+
+// 获取该分类下的非草稿报告，按日期倒序
+const reports = (await getCollection('reports', ({ data }) =>
+  !data.draft && data.category === category
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title={`${category} - 分类`} description={`${category}分类下的研究报告`}>
+  <div class="container page-content">
+    <section class="page-header">
+      <h1>{category}</h1>
+      <p class="page-desc">共 {reports.length} 篇报告</p>
+    </section>
+
+    <CategoryNav current={category} />
+
+    {reports.length === 0 ? (
+      <div class="empty-state">
+        <p>该分类暂无报告。</p>
+      </div>
+    ) : (
+      <div class="report-grid">
+        {reports.map((report) => (
+          <ReportCard
+            title={report.data.title}
+            slug={report.data.slug}
+            source={report.data.source}
+            date={report.data.date}
+            category={report.data.category}
+            tags={report.data.tags}
+            summary={report.data.summary}
+          />
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-3xl);
+  }
+
+  .page-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: var(--space-xs);
+  }
+
+  .page-desc {
+    color: var(--color-text-secondary);
+  }
+
+  .report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-3xl) 0;
+    color: var(--color-text-secondary);
+  }
+</style>

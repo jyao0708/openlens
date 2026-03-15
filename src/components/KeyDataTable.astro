@@ -1,0 +1,57 @@
+---
+// 关键数据表格组件 — 展示报告中的核心数据点
+interface Props {
+  data: Array<{
+    metric: string;
+    value: string;
+    note?: string;
+  }>;
+}
+
+const { data } = Astro.props;
+---
+
+<div class="key-data-grid">
+  {data.map((item) => (
+    <div class="data-card">
+      <div class="data-value">{item.value}</div>
+      <div class="data-metric">{item.metric}</div>
+      {item.note && <div class="data-note">{item.note}</div>}
+    </div>
+  ))}
+</div>
+
+<style>
+  .key-data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .data-card {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+  }
+
+  .data-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.2;
+    margin-bottom: var(--space-xs);
+  }
+
+  .data-metric {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .data-note {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-xs);
+  }
+</style>

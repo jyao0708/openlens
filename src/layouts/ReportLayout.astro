@@ -1,0 +1,196 @@
+---
+// 报告详情页布局 — 展示单篇报告的完整内容
+import BaseLayout from './BaseLayout.astro';
+import TagList from '../components/TagList.astro';
+import PdfDownload from '../components/PdfDownload.astro';
+import KeyDataTable from '../components/KeyDataTable.astro';
+
+interface Props {
+  title: string;
+  source: string;
+  date: Date;
+  pageCount?: number;
+  category: string;
+  tags: string[];
+  summary: string;
+  keyFindings: string[];
+  keyData?: Array<{ metric: string; value: string; note?: string }>;
+  pdf: string;
+}
+
+const {
+  title,
+  source,
+  date,
+  pageCount,
+  category,
+  tags,
+  summary,
+  keyFindings,
+  keyData,
+  pdf,
+} = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL;
+
+// 格式化日期
+const formattedDate = date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={title} description={summary}>
+  <article class="report-detail container container--narrow">
+    <!-- 报告头部 -->
+    <header class="report-header">
+      <div class="report-meta-top">
+        <a href={`${baseUrl}categories/${category}`} class="category-badge">{category}</a>
+        <time datetime={date.toISOString().split('T')[0]}>{formattedDate}</time>
+      </div>
+      <h1>{title}</h1>
+      <div class="report-meta">
+        <span class="source">出品：{source}</span>
+        {pageCount && <span class="page-count">{pageCount} 页</span>}
+      </div>
+      <TagList tags={tags} />
+    </header>
+
+    <!-- 摘要 -->
+    <section class="report-summary">
+      <p>{summary}</p>
+    </section>
+
+    <!-- PDF 下载 -->
+    <PdfDownload href={pdf} title={title} />
+
+    <!-- 核心结论 -->
+    <section class="key-findings">
+      <h2>核心结论</h2>
+      <ol>
+        {keyFindings.map((finding) => <li>{finding}</li>)}
+      </ol>
+    </section>
+
+    <!-- 关键数据 -->
+    {keyData && keyData.length > 0 && (
+      <section class="key-data">
+        <h2>关键数据</h2>
+        <KeyDataTable data={keyData} />
+      </section>
+    )}
+
+    <!-- 正文内容（Markdown 渲染） -->
+    <section class="report-body prose">
+      <slot />
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .report-detail {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-3xl);
+  }
+
+  .report-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .report-meta-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+
+  .category-badge {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .report-meta-top time {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .report-header h1 {
+    font-size: 1.875rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: var(--space-md);
+    color: var(--color-text);
+  }
+
+  .report-meta {
+    display: flex;
+    gap: var(--space-md);
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .report-meta .source {
+    font-weight: 500;
+  }
+
+  .page-count::before {
+    content: '·';
+    margin-right: var(--space-md);
+  }
+
+  .report-summary {
+    background-color: var(--color-bg-secondary);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-xl);
+    border-left: 4px solid var(--color-primary);
+  }
+
+  .report-summary p {
+    color: var(--color-text);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .key-findings {
+    margin-bottom: var(--space-xl);
+  }
+
+  .key-findings h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+  }
+
+  .key-findings ol {
+    padding-left: var(--space-xl);
+  }
+
+  .key-findings li {
+    margin-bottom: var(--space-sm);
+    line-height: 1.7;
+  }
+
+  .key-data {
+    margin-bottom: var(--space-xl);
+  }
+
+  .key-data h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+  }
+
+  .report-body {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

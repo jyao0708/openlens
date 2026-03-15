@@ -1,0 +1,83 @@
+---
+// 首页 — 展示所有报告列表
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ReportCard from '../components/ReportCard.astro';
+import CategoryNav from '../components/CategoryNav.astro';
+
+// 获取所有非草稿报告，按日期倒序排列
+const allReports = (await getCollection('reports', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="首页">
+  <div class="container page-content">
+    <section class="page-header">
+      <h1>OpenLens</h1>
+      <p class="page-desc">AI 驱动的行业洞察 — 从报告中提炼信号</p>
+    </section>
+
+    <CategoryNav />
+
+    {allReports.length === 0 ? (
+      <div class="empty-state">
+        <p>暂无报告内容。</p>
+        <p class="empty-hint">将 PDF 放入 inbox/pdf/ 目录，使用 AI 分析后即可发布。</p>
+      </div>
+    ) : (
+      <div class="report-grid">
+        {allReports.map((report) => (
+          <ReportCard
+            title={report.data.title}
+            slug={report.data.slug}
+            source={report.data.source}
+            date={report.data.date}
+            category={report.data.category}
+            tags={report.data.tags}
+            summary={report.data.summary}
+          />
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-3xl);
+  }
+
+  .page-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: var(--space-sm);
+  }
+
+  .page-desc {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+  }
+
+  .report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-3xl) 0;
+    color: var(--color-text-secondary);
+  }
+
+  .empty-hint {
+    margin-top: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+</style>

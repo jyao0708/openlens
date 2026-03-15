@@ -1,0 +1,24 @@
+{
+  "name": "openlens",
+  "version": "1.0.0",
+  "description": "行业研究报告知识库",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "process": "tsx scripts/process-pdfs.ts",
+    "process:dry": "tsx scripts/process-pdfs.ts --dry-run"
+  },
+  "dependencies": {
+    "astro": "^6.0.4"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.1.1",
+    "p-limit": "^7.3.0",
+    "pdf-lib": "^1.17.1",
+    "tsx": "^4.21.0",
+    "zod": "^4.3.6"
+  }
+}

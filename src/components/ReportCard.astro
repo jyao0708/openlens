@@ -1,0 +1,144 @@
+---
+// 报告卡片组件 — 用于首页、分类页、标签页的报告列表展示
+interface Props {
+  title: string;
+  slug: string;
+  source: string;
+  date: Date;
+  category: string;
+  tags: string[];
+  summary: string;
+}
+
+const { title, slug, source, date, category, tags, summary } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+
+const formattedDate = date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="report-card">
+  <div class="card-header">
+    <a href={`${baseUrl}categories/${category}`} class="category-badge">{category}</a>
+    <time datetime={date.toISOString().split('T')[0]}>{formattedDate}</time>
+  </div>
+  <h3 class="card-title">
+    <a href={`${baseUrl}reports/${slug}`}>{title}</a>
+  </h3>
+  <p class="card-summary">{summary}</p>
+  <div class="card-footer">
+    <span class="card-source">{source}</span>
+    <div class="card-tags">
+      {tags.slice(0, 3).map((tag) => (
+        <a href={`${baseUrl}tags/${tag}`} class="tag">{tag}</a>
+      ))}
+      {tags.length > 3 && <span class="tag-more">+{tags.length - 3}</span>}
+    </div>
+  </div>
+</article>
+
+<style>
+  .report-card {
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .report-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary-light);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+  }
+
+  .category-badge {
+    display: inline-block;
+    padding: 2px var(--space-sm);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .card-header time {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: var(--space-sm);
+  }
+
+  .card-title a {
+    color: var(--color-text);
+  }
+
+  .card-title a:hover {
+    color: var(--color-primary);
+  }
+
+  .card-summary {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  .card-source {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 1px var(--space-sm);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tag:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .tag-more {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+</style>

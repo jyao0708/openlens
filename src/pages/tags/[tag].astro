@@ -1,0 +1,90 @@
+---
+// 标签页面 — 动态路由，展示包含某个标签的所有报告
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ReportCard from '../../components/ReportCard.astro';
+
+// 静态路径生成：收集所有不重复的标签
+export async function getStaticPaths() {
+  const allReports = await getCollection('reports', ({ data }) => !data.draft);
+  const allTags = [...new Set(allReports.flatMap((r) => r.data.tags))];
+  return allTags.map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+
+// 获取包含该标签的非草稿报告，按日期倒序
+const reports = (await getCollection('reports', ({ data }) =>
+  !data.draft && data.tags.includes(tag)
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title={`#${tag} - 标签`} description={`包含标签「${tag}」的研究报告`}>
+  <div class="container page-content">
+    <section class="page-header">
+      <h1><span class="hash">#</span>{tag}</h1>
+      <p class="page-desc">共 {reports.length} 篇报告</p>
+    </section>
+
+    {reports.length === 0 ? (
+      <div class="empty-state">
+        <p>该标签暂无报告。</p>
+      </div>
+    ) : (
+      <div class="report-grid">
+        {reports.map((report) => (
+          <ReportCard
+            title={report.data.title}
+            slug={report.data.slug}
+            source={report.data.source}
+            date={report.data.date}
+            category={report.data.category}
+            tags={report.data.tags}
+            summary={report.data.summary}
+          />
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-3xl);
+  }
+
+  .page-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: var(--space-xs);
+  }
+
+  .hash {
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  .page-desc {
+    color: var(--color-text-secondary);
+  }
+
+  .report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-3xl) 0;
+    color: var(--color-text-secondary);
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+// 分类导航组件 — 展示所有分类，高亮当前选中
+import { CATEGORIES } from '../content.config';
+
+interface Props {
+  /** 当前激活的分类 */
+  current?: string;
+}
+
+const { current } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<nav class="category-nav">
+  <a
+    href={baseUrl}
+    class:list={['category-link', { active: !current }]}
+  >
+    全部
+  </a>
+  {CATEGORIES.map((cat) => (
+    <a
+      href={`${baseUrl}categories/${cat}`}
+      class:list={['category-link', { active: current === cat }]}
+    >
+      {cat}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+  }
+
+  .category-link {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+  }
+
+  .category-link:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .category-link.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #ffffff;
+  }
+</style>

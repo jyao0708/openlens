@@ -1,0 +1,32 @@
+---
+// 报告详情页 — 动态路由，根据 slug 渲染单篇报告
+import { getCollection, render } from 'astro:content';
+import ReportLayout from '../../layouts/ReportLayout.astro';
+
+// 静态路径生成
+export async function getStaticPaths() {
+  const reports = await getCollection('reports', ({ data }) => !data.draft);
+  return reports.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<ReportLayout
+  title={entry.data.title}
+  source={entry.data.source}
+  date={entry.data.date}
+  pageCount={entry.data.pageCount}
+  category={entry.data.category}
+  tags={entry.data.tags}
+  summary={entry.data.summary}
+  keyFindings={entry.data.keyFindings}
+  keyData={entry.data.keyData}
+  pdf={entry.data.pdf}
+>
+  <Content />
+</ReportLayout>

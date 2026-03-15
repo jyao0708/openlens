@@ -1,0 +1,32 @@
+# 构建输出
+dist/
+
+# 依赖
+node_modules/
+
+# Astro 缓存
+.astro/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 环境变量
+.env
+.env.*
+
+# 原始资源投递目录（临时中转站，不进 Git）
+inbox/
+
+# 脚本运行日志
+scripts/logs/
+
+# LiteLLM 临时配置（可能含密钥）
+litellm_config*.yaml
+.claude.md
