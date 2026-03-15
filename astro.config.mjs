@@ -7,5 +7,5 @@ export default defineConfig({
   // 如果仓库名为 <username>.github.io，site 设为 https://<username>.github.io
   // 如果仓库名为其他（如 openlens），还需要设置 base: '/openlens'
   site: 'https://jyao0708.github.io',
-  base: '/openlens',
+  base: '/openlens/',
 });
