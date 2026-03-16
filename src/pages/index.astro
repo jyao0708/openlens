@@ -26,49 +26,42 @@ const reportCount = allReports.length;
     <div class="absolute -bottom-32 -left-32 w-[300px] h-[300px] rounded-full bg-amber-600/10 blur-[60px]"></div>
 
     <!-- 底部渐变过渡 -->
-    <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-paper to-transparent"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-paper to-transparent"></div>
 
-    <div class="relative max-w-6xl mx-auto px-6 py-24 md:py-36">
+    <div class="relative max-w-6xl mx-auto px-6 py-16 md:py-24">
       <!-- 居中布局 -->
       <div class="max-w-3xl mx-auto text-center animate-fade-up">
         <!-- 状态标签 -->
-        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-full mb-8">
-          <div class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></div>
-          <span class="text-xs font-semibold text-amber-300 tracking-wider uppercase">{reportCount} 份深度报告已入库</span>
+        <div class="inline-flex items-center gap-2.5 px-5 py-2 bg-white/8 backdrop-blur-sm border border-white/15 rounded-full mb-7">
+          <div class="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"></div>
+          <span class="text-xs font-bold text-amber-300 tracking-wider">{reportCount} 份深度报告已入库</span>
         </div>
 
         <!-- 主标题 -->
-        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
+        <h1 class="font-display text-4xl sm:text-5xl md:text-[3.5rem] font-extrabold text-white leading-[1.1] tracking-tight mb-5">
           从报告中<br class="sm:hidden" />
           <span class="relative inline-block">
             <span class="text-amber-400">提炼信号</span>
-            <span class="absolute -bottom-1 left-0 right-0 h-[3px] bg-amber-500/50 rounded-full"></span>
+            <span class="absolute -bottom-1.5 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-500/80 via-amber-400 to-amber-500/40 rounded-full"></span>
           </span>
         </h1>
 
         <!-- 副标题 -->
-        <p class="text-base sm:text-lg text-ink-300 leading-relaxed max-w-xl mx-auto animate-fade-up delay-1 mb-10">
+        <p class="text-base sm:text-lg text-ink-300/90 leading-relaxed max-w-xl mx-auto animate-fade-up delay-1">
           AI 驱动的行业洞察平台。自动解析 PDF 研究报告，提取核心结论与关键数据，构建可检索的知识库。
         </p>
-
-        <!-- 装饰性分割线 -->
-        <div class="flex items-center justify-center gap-3 animate-fade-up delay-2">
-          <div class="w-12 h-px bg-ink-600"></div>
-          <div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-          <div class="w-12 h-px bg-ink-600"></div>
-        </div>
       </div>
     </div>
   </section>
 
   <!-- 报告列表 -->
-  <section class="max-w-6xl mx-auto px-6 py-14 md:py-20">
+  <section class="max-w-6xl mx-auto px-6 pt-10 pb-16 md:pt-14 md:pb-20">
     <!-- 分类导航区域 -->
-    <div class="mb-2 animate-fade-up">
-      <div class="flex items-center gap-3 mb-6">
-        <h2 class="font-display text-xl font-bold text-ink-900 tracking-tight">研究报告</h2>
-        <div class="flex-1 h-px bg-ink-200"></div>
-        <span class="text-xs font-medium text-ink-400 tracking-wide tabular-nums">{reportCount} 篇</span>
+    <div class="mb-1 animate-fade-up">
+      <div class="flex items-center gap-3 mb-5">
+        <h2 class="font-display text-lg font-bold text-ink-900 tracking-tight">研究报告</h2>
+        <div class="flex-1 h-px bg-ink-200/70"></div>
+        <span class="text-xs font-semibold text-ink-400 tabular-nums">{reportCount} 篇</span>
       </div>
     </div>
 

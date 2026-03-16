@@ -11,14 +11,14 @@ const { current } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 ---
 
-<nav class="flex flex-wrap gap-2.5 mb-10">
+<nav class="flex flex-wrap gap-2 mb-7">
   <a
     href={baseUrl}
     class:list={[
-      'inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold transition-all duration-250',
+      'inline-flex items-center px-3.5 py-1.5 rounded-full text-[13px] font-semibold transition-all duration-200',
       !current
-        ? 'bg-ink-900 text-white shadow-lg shadow-ink-900/25 ring-1 ring-ink-800'
-        : 'bg-white text-ink-500 border border-ink-200 card-shadow hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50 hover:shadow-md'
+        ? 'bg-ink-900 text-white shadow-md shadow-ink-900/20'
+        : 'bg-white text-ink-500 border border-ink-200/80 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50'
     ]}
   >
     全部
@@ -27,10 +27,10 @@ const baseUrl = import.meta.env.BASE_URL;
     <a
       href={`${baseUrl}categories/${cat}`}
       class:list={[
-        'inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold transition-all duration-250',
+        'inline-flex items-center px-3.5 py-1.5 rounded-full text-[13px] font-semibold transition-all duration-200',
         current === cat
-          ? 'bg-ink-900 text-white shadow-lg shadow-ink-900/25 ring-1 ring-ink-800'
-          : 'bg-white text-ink-500 border border-ink-200 card-shadow hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50 hover:shadow-md'
+          ? 'bg-ink-900 text-white shadow-md shadow-ink-900/20'
+          : 'bg-white text-ink-500 border border-ink-200/80 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50'
       ]}
     >
       {cat}
